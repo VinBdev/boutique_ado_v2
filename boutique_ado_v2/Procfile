@@ -1,0 +1,1 @@
+web: gunicron boutique_ado_v2_wgsi:applicationboutique_ado_v2/__init__.py
