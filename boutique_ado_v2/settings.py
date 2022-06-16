@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # Other
     'crispy_forms',
+    'storages'z
 ]
 
 MIDDLEWARE = [
@@ -169,6 +170,26 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+if 'USE_AWS' in os.environ:
+    # bucket config
+    AWS_STORAGE_BUCKET_NAME = 'boutiqueadov2'
+    AWS_S3_REGION_NAME = 'eu-west-1'
+    AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID'
+    AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+
+# static and media files
+    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    STATICFILES_LOCATION = 'static'
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+    MEDIAFILES_LOCATION ='media'
+
+
+# Ovveride static and media URLs in production
+STATIC_URLS = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+MEDIA_URLS = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Stripe
 FREE_DELIVERY_THRESHOLD = 50
